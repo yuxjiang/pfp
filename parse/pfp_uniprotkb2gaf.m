@@ -132,7 +132,7 @@ function [] = pfp_uniprotkb2gaf(ifile, ofile, extract_seq)
 
     % the regular expression of a valid UniProt Accession number
     acc_pattern = '[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}';
-    id_pattern  = ['([A-Z0-9]{1,5})|(', acc_pattern, ')_[A-Z0-9]{1,5}'];
+    id_pattern  = ['([A-Z0-9]{1,5}|', acc_pattern, ')_[A-Z0-9]{1,5}'];
 
     buf_size = 1e4; % buffer size for sequences
     if extract_seq
@@ -163,7 +163,6 @@ function [] = pfp_uniprotkb2gaf(ifile, ofile, extract_seq)
         % {{{
         if ~isempty(tline)
             hash_value = HashTable(max(0, tline(1:2) - ' ') * [59; 1] + 1);
-
             switch hash_value
                 case 01 % ID
                     KBstruct.id = regexp(tline, id_pattern, 'match', 'once');
@@ -305,4 +304,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 02:24:48 PM E
+% Last modified: Thu 22 Sep 2016 10:56:44 PM E

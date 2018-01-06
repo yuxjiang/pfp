@@ -42,6 +42,17 @@ function [pred] = pfp_gotcha(qseqid, B, oa, varargin)
     %       E_VALUE of some hits are extremely tiny, or even 0.0 (-log(E) -> inf)
     %       default: 500 (E_VALUE < 1e-500 results in no greater R_SCORE)
     %
+    % [double]
+    % c:    The constant shift added to R_SCORE:
+    %       R_SCORE = -log(E) + c
+    %       (Note that c = 0 in the original GOtcha paper, while c is set to 2
+    %       in FANNGO)
+    %       default: 0.
+    %
+    % [double]
+    % nw:   The number of workers in parallel mode. Must be a positive integer.
+    %       default: 8.
+    %
     % Output
     % ------
     % [struct]
@@ -78,9 +89,15 @@ function [pred] = pfp_gotcha(qseqid, B, oa, varargin)
     % extra inputs {{{
     p = inputParser;
     defaultMAXR = 500;
+    defaultC    = 0;
+    defaultNW   = 8;
     addParameter(p, 'maxr', defaultMAXR, @(x) validateattributes(x, {'double'}, {'positive'}));
+    addParameter(p, 'c', defaultC, @(x) validateattributes(x, {'double'}, {}));
+    addParameter(p, 'nw', defaultNW, @(x) validateattributes(x, {'double'}, {'positive', 'integer'}));
     parse(p, varargin{:});
     MAX_RSCORE = p.Results.maxr;
+    C          = p.Results.c;
+    NW         = p.Results.nw;
     % }}}
 
     % preparing output {{{
@@ -88,13 +105,23 @@ function [pred] = pfp_gotcha(qseqid, B, oa, varargin)
     pred.ontology = oa.ontology;
     n = numel(pred.object);
     m = numel(pred.ontology.term);
-    pred.score = sparse(n, m);
+    % pred.score = sparse(n, m);
+    pred.score = []; % place-holder
     pred.date  = datestr(now, 'mm/dd/yyyy HH:MM');
     % }}}
 
     % compute R_SCORE {{{
     [found, index] = ismember(pred.object, B.qseqid);
-    for i = 1 : n
+    % parallel setting
+    score = sparse(n, m);
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        poolobj = parpool(NW);
+    else
+        poolobj.NumWorkers = NW;
+    end
+    parfor i = 1 : n
+    % for i = 1 : n
         if found(i)
             l = index(i);
             k = numel(B.info{l}.sseqid);
@@ -104,16 +131,19 @@ function [pred] = pfp_gotcha(qseqid, B, oa, varargin)
                 % all hits aren't annotated, predicted scores are left as zeros
                 continue;
             end
-
-            % crop the value to be within [0, MAX_RSCORE]
-            f = -log(B.info{l}.evalue(sfound)) + 2;
+            % clamp the R_SCORE to be within the interval [0, MAX_RSCORE]
+            % f = -log(B.info{l}.evalue(sfound)) + 2;
+            f = -log10(B.info{l}.evalue(sfound)) + C;
             f(f > MAX_RSCORE) = MAX_RSCORE;
             f(f < 0) = 0;
 
             anno_mat(sfound, :) = bsxfun(@times, oa.annotation(sindex(sfound), :), f);
-            pred.score(i, :) = sum(anno_mat, 1);
+            % pred.score(i, :) = sum(anno_mat, 1);
+            score(i, :) = sum(anno_mat, 1);
         end
     end
+    delete(poolobj);
+    pred.score = score;
     % }}}
 
     % normalize R_SCORES to get I_SCORES {{{
@@ -128,4 +158,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 12:45:22 PM E
+% Last modified: Sat 21 Jan 2017 12:07:25 AM E

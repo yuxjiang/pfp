@@ -1,13 +1,9 @@
 function [P] = pfp_mutualpos(X, Y)
     %PFP_MUTUALPOS Mutual positive
     %
-    % [P] = PFP_MUTUALPOS(X);
+    %   [P] = PFP_MUTUALPOS(X, Y);
     %
-    %   Returns the pairwise mutual positive of (columns) of X.
-    %
-    % [P] = PFP_MUTUALPOS(X, Y);
-    %
-    %   Returns the pairwise mutual positive of (columns) of X and Y.
+    %       Returns the pairwise mutual positive of (columns) of X and Y.
     %
     % Definition
     % ----------
@@ -26,27 +22,20 @@ function [P] = pfp_mutualpos(X, Y)
     %
     % Input
     % -----
-    % (required)
     % [logical]
     % X:    An n-by-k binary matrix.
     %
-    % (optional)
     % [logical]
     % Y:    An n-by-l binary matrix.
     %
     % Output
     % ------
     % [double]
-    % P:    A k-by-k (when Y is not presented) or
-    %       a k-by-l (when Y is presented) mutual positive matrix.
+    % P:    k-by-l mutual positive matrix.
 
     % check input {{{
-    if nargin ~= 1 && nargin ~= 2
-        error('pfp_mutualpos:InputCount', 'Expected 1 or 2 inputs.');
-    end
-
-    if nargin == 1
-        Y = X;
+    if nargin ~= 2
+        error('pfp_mutualpos:InputCount', 'Expected 2 inputs.');
     end
 
     % X
@@ -84,4 +73,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 02:35:19 PM E
+% Last modified: Thu 16 Feb 2017 05:06:09 PM E

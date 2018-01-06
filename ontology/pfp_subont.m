@@ -14,6 +14,12 @@ function [subont] = pfp_subont(ont, list)
     %   else
     % end
     %
+    % Remark
+    % ------
+    % The resullting ontology contains only terms in the given list. If one
+    % needs to create a consistent sub-ontology derived by the list, call this
+    % function as: pfp_subont(ont, pfp_ancestorterm(ont, list))
+    %
     % Caveat
     % ------
     % All types of "relation" on the edges of the original DAG will be lost in
@@ -42,6 +48,7 @@ function [subont] = pfp_subont(ont, list)
     % See Also
     % --------
     % [>] pfp_ontbuild.m
+    % [>] pfp_ancestorterm.m
 
     % check inputs {{{
     if nargin ~= 2
@@ -104,4 +111,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 01:17:12 PM E
+% Last modified: Sun 12 Feb 2017 12:21:49 AM E

@@ -51,17 +51,14 @@ function [gene] = pfp_hgncgene(hgnc, query, verbose)
         verbose = true;
     end
 
-    % check the 1st input 'hgnc' {{{
+    % check the 1st input 'hgnc'
     validateattributes(hgnc, {'struct'}, {'nonempty'}, '', 'hgnc', 1);
-    % }}}
 
-    % check the 2nd input 'query' {{{
+    % check the 2nd input 'query'
     validateattributes(query, {'cell', 'double', 'char'}, {'nonempty'}, '', 'query', 2);
-    % }}}
 
-    % check the 3rd input 'verbose' {{{
+    % check the 3rd input 'verbose'
     validateattributes(verbose, {'logical'}, {'nonempty'}, '', 'logical', 3);
-    % }}}
     % }}}
 
     % get gene {{{
@@ -92,7 +89,11 @@ function gene = loc_get_gene_by_id(hgnc, id, verbose)
     [found, index] = ismember(id, [hgnc.id]);
 
     if verbose && ~all(found)
-        warning('pfp_hgncgene:InputErr', 'Some IDs are invalid.');
+        warning('pfp_hgncgene:InputErr', 'Invalid IDs detected.');
+        invalid = find(~found);
+        for i = 1 : numel(invalid)
+            fprintf('[%d]\n', id(invalid(i)));
+        end
     end
 
     acc = reshape(id, [], 1);
@@ -164,7 +165,11 @@ function gene = loc_get_gene_by_symbol(hgnc, symbol, verbose)
 
     found = is_special | is_approved | is_previous | is_synonyms;
     if verbose && ~all(found)
-        warning('pfp_hgncgene:InvalidSymb', 'Some symbols are invalid.');
+        warning('pfp_hgncgene:InvalidSymb', 'Invalid symbols detected.');
+        invalid = find(~found);
+        for i = 1 : numel(invalid)
+            fprintf('[%s]\n', symbol{invalid(i)});
+        end
     end
 
     gene = cell2struct([num2cell(acc), tag], {'id', 'symbol'}, 2);
@@ -175,4 +180,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 02:30:30 PM E
+% Last modified: Sun 09 Apr 2017 07:03:55 PM E

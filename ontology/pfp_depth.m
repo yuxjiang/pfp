@@ -7,12 +7,16 @@ function [d] = pfp_depth(ont, list)
     %
     % [d] = PFP_DEPTH(ont, list);
     %
-    %   Returns the depth of a (list of) term(s) in the ontology.
+    %   Returns the depth of (a list of) terms in the ontology.
     %
     % Definition
     % ----------
     % Term depth: Length of the shortest path from the root to this term.
     % Ontology depth: The maximum "term depth" in this ontology.
+    %
+    % Caveat
+    % ------
+    % This function assumes single root of the ontology.
     %
     % Input
     % -----
@@ -21,13 +25,19 @@ function [d] = pfp_depth(ont, list)
     %
     % (optional)
     % [struct or cell]
-    % list: [struct] - an array of term structures.
-    %       [cell]   - a cell of (char) term IDs.
+    % list: [struct] - an array of m term structures.
+    %       [cell]   - a cell of m (char) term IDs.
+    %       If list is given as empty, the function returns the depth for the
+    %       ontology.
+    %       default: {}
     %
     % Output
     % ------
     % [double]
     % d:    The depth information.
+    %       If querying the ontology depth, d is a single value, otherwise, d is
+    %       a 1-by-m vector of depth.
+    %       Note that unfound terms correspond to a NaN in d.
     %
     % Dependency
     % ----------
@@ -36,6 +46,7 @@ function [d] = pfp_depth(ont, list)
     % See Also
     % --------
     % [>] pfp_ontbuild.m
+    % [>] pfp_level.m
 
     % check inputs {{{
     if nargin ~= 1 && nargin ~= 2
@@ -102,4 +113,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 01:12:06 PM E
+% Last modified: Wed 11 Oct 2017 09:15:51 AM E

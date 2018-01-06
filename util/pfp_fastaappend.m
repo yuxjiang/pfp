@@ -46,9 +46,9 @@ function [] = pfp_fastaappend(afile, head, seq, len)
 
     % file
     validateattributes(afile, {'char'}, {'nonempty'}, '', 'afile', 1);
-    fid = fopen(ofile, 'a');
+    fid = fopen(afile, 'a');
     if fid == -1
-        error('pfp_fastaappend:FileErr', 'Cannot open the file [%s].', ofile);
+        error('pfp_fastaappend:FileErr', 'Cannot open the file [%s].', afile);
     end
 
     % head
@@ -86,4 +86,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 02:28:46 PM E
+% Last modified: Mon 17 Oct 2016 12:34:33 AM E

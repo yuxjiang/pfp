@@ -78,9 +78,14 @@ function [X, mn, mx] = pfp_minmaxnrm(X, mn, mx)
     range = mx - mn;
     tiny_range = range < 1e-8;
 
-    % squash data with a tiny range.
+    % squash columns with a tiny range.
     X(:, tiny_range) = 0.0;
-    range(tiny_range) = 1.0; % avoid divide-by-zero
+
+    % reset minimum value to 0 for tiny columns
+    mn(tiny_range) = 0;
+
+    % avoid divide-by-zero
+    range(tiny_range) = 1.0;
 
     X = bsxfun(@minus, X, mn);
     X = bsxfun(@rdivide, X, range);
@@ -91,4 +96,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 02:34:56 PM E
+% Last modified: Sun 14 May 2017 10:05:39 PM E

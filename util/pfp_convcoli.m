@@ -1,7 +1,7 @@
 function [ocol] = pfp_convcoli(icol, map, keep)
-    %PPF_CONVCOLI Convert column (interactive)
+    %PFP_CONVCOLI Convert column (interactive)
     %
-    % [ocol] = PFP_MAPCOL(icol, map, keep);
+    % [ocol] = PFP_CONVCOLI(icol, map, keep);
     %
     %   Converts the column according to 'map' in the interactive mode.
     %
@@ -17,7 +17,9 @@ function [ocol] = pfp_convcoli(icol, map, keep)
     %
     % (optional)
     % [logical]
-    % keep: A toggle for keeping unmapped entry or not.
+    % keep: A toggle for keeping unmapped entry or not. If true, unmaped items
+    %       will be left as they are, otherwise, they will be replaced as an
+    %       empty string: ''.
     %       default: true
     %
     % Output
@@ -51,7 +53,8 @@ function [ocol] = pfp_convcoli(icol, map, keep)
         ocol = icol; % unmapped will be kept as the same as the input
         ocol(found) = map(index(found), 2);
     else
-        ocol = map(index(found), 2);
+        ocol = repmat({''}, length(icol), 1);
+        ocol(found) = map(index(found), 2);
     end
     % }}}
 end
@@ -60,4 +63,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University, Bloomington
-% Last modified: Wed 21 Sep 2016 02:27:44 PM E
+% Last modified: Wed 01 Feb 2017 10:22:29 AM E

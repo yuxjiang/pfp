@@ -1,13 +1,13 @@
-function [dist] = pfp_semdist(ont, eia, term1, term2, k)
+function [dist] = pfp_semdist(ont, eia, term1, term2, p)
     %PFP_SEMDIST Semantic distance
     %
-    % [icd] = PFP_SEMDIST(ont, eia, term1, term2);
+    %   [icd] = PFP_SEMDIST(ont, eia, term1, term2);
     %
-    %   Returns the "semantic distance" of order 2 between two terms.
+    %       Returns the "semantic distance" of order 2 between two terms.
     %
-    % [icd] = PFP_SEMDIST(ont, eia, term1, term2, k);
+    %   [icd] = PFP_SEMDIST(ont, eia, term1, term2, p);
     %
-    %   Returns the "semantic distance" of order k between two terms.
+    %       Returns the "semantic distance" of order p between two terms.
     %
     % Input
     % -----
@@ -18,16 +18,16 @@ function [dist] = pfp_semdist(ont, eia, term1, term2, k)
     % eia:      The corresponding estimated information accretion for each term.
     %
     % [char or struct]
-    % term1:    [char]   -  ID of term 1.
+    % term1:    [char]   - ID of term 1.
     %           [struct] - term structure.
     %
     % [char or struct]
-    % term2:    [char]   -  ID of term 2.
+    % term2:    [char]   - ID of term 2.
     %           [struct] - term structure.
     %
     % (optional)
     % [double]
-    % k:    Order.
+    % p:    Order.
     %       default: 2
     %
     % Output
@@ -47,44 +47,36 @@ function [dist] = pfp_semdist(ont, eia, term1, term2, k)
     end
 
     if nargin == 4
-        k = 2;
+        p = 2;
     end
 
-    % check the 1st input 'ont' {{{
+    % ont
     validateattributes(ont, {'struct'}, {'nonempty'}, '', 'ont', 1);
-    % }}}
 
-    % check the 2nd input 'eia' {{{
+    % eia
     n = numel(ont.term);
     validateattributes(eia, {'double'}, {'numel', n}, '', 'eia', 2);
-    % }}}
 
-    % check the 3rd input 'term1' {{{
+    % term1
     validateattributes(term1, {'char', 'struct'}, {'nonempty'}, '', 'term1', 3);
-    % }}}
 
-    % check the 4th input 'term2' {{{
+    % term2
     validateattributes(term2, {'char', 'struct'}, {'nonempty'}, '', 'term2', 4);
-    % }}}
 
-    % check the 5th input 'k' {{{
-    validateattributes(k, {'double'}, {'real'}, '', 'k', 5);
-    % }}}
+    % p
+    validateattributes(p, {'double'}, {'real'}, '', 'p', 5);
     % }}}
 
     % compute semantic distance {{{
     id1 = pfp_ancestortermidx(ont, term1);
     id2 = pfp_ancestortermidx(ont, term2);
-
-    d1 = sum(eia(setdiff(id1, id2)));
-    d2 = sum(eia(setdiff(id2, id1)));
-
-    if isinf(k)
+    d1  = sum(eia(setdiff(id1, id2)));
+    d2  = sum(eia(setdiff(id2, id1)));
+    if isinf(p)
         dist = max(d1, d2);
         return;
     end
-
-    dist = (d1 .^ k + d2 .^ k) .^ (1/k);
+    dist = (d1 .^ p + d2 .^ p) .^ (1/p);
     % }}}
 end
 
@@ -92,4 +84,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 02:39:49 PM E
+% Last modified: Thu 07 Dec 2017 11:50:00 PM E

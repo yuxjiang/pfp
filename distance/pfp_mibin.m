@@ -1,13 +1,9 @@
 function [I] = pfp_mibin(X, Y)
     %PFP_MIBIN Mutual information binary
     %
-    % [I] = PFP_MIBIN(X);
+    %   [I] = PFP_MIBIN(X, Y);
     %
-    %   Returns the pairwise mutual information of (columns of) X.
-    %
-    % [I] = PFP_MIBIN(X, Y);
-    %
-    %   Returns the pairwise mutual information of (columns of) X and Y.
+    %       Returns the pairwise mutual information of (columns of) X and Y.
     %
     % Note
     % ----
@@ -17,27 +13,20 @@ function [I] = pfp_mibin(X, Y)
     %
     % Input
     % -----
-    % (required)
     % [logical]
     % X:    An n-by-k binary matrix
     %
-    % (optional)
     % [logical]
     % Y:    An n-by-l binary matrix
     %
     % Output
     % ------
     % [double]
-    % I:    k-by-k (when Y is not presented) or
-    %       k-by-l (when Y is presented) mutual information matrix.
+    % I:    k-by-l mutual information matrix.
 
     % check input {{{
-    if nargin ~= 1 && nargin ~= 2
-        error('pfp_mibin:InputCount', 'Expected 1 or 2 inputs.');
-    end
-
-    if nargin == 1
-        Y = X;
+    if nargin ~= 2
+        error('pfp_mibin:InputCount', 'Expected 2 inputs.');
     end
 
     % X
@@ -104,4 +93,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 02:34:32 PM E
+% Last modified: Thu 16 Feb 2017 05:04:39 PM E

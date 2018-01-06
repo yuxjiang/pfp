@@ -7,11 +7,14 @@ function [items] = pfp_loaditem(ifile, dtype)
     %
     % Input
     % -----
+    % (required)
     % [char]
     % ifile:    The data file name.
     %
+    % (optional)
     % [char]
     % dtype:    The type of the data, could be 'char' or 'numeric'.
+    %           default: 'char'
     %
     % Output
     % ------
@@ -19,8 +22,12 @@ function [items] = pfp_loaditem(ifile, dtype)
     % items:    The resuling data holder, types depends on 'dtype'.
 
     % check inputs {{{
-    if nargin ~= 2
-        error('pfp_loaditem:InputCount', 'Expected 2 inputs.');
+    if nargin < 1 || nargin > 2
+        error('pfp_loaditem:InputCount', 'Expected 1 or 2 inputs.');
+    end
+
+    if nargin == 1
+        dtype = 'char';
     end
 
     % ifile
@@ -38,7 +45,7 @@ function [items] = pfp_loaditem(ifile, dtype)
     % load data {{{
     switch dtype
         case 'char'
-            data = textscan(fid, '%s');
+            data = textscan(fid, '%s', 'whitespace', '\n');
             items = data{1};
         case 'numeric'
             data = textscan(fid, '%f');
@@ -55,4 +62,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 02:33:31 PM E
+% Last modified: Wed 15 Feb 2017 02:10:09 PM E

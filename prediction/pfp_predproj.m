@@ -54,13 +54,11 @@ function [pred] = pfp_predproj(pred, list, op)
         op = 'object';
     end
 
-    % check the 1st input 'pred' {{{
+    % pred
     validateattributes(pred, {'struct'}, {'nonempty'}, '', 'pred', 1);
-    % }}}
 
-    % check the 2nd input 'list' {{{
+    % list
     validateattributes(list, {'cell', 'struct'}, {'nonempty'}, '', 'list', 2);
-    % }}}
 
     % op 
     validateattributes(op, {'char'}, {'nonempty'}, '', 'op', 3);
@@ -88,7 +86,7 @@ function [pred] = pfp_predproj(pred, list, op)
                 error('pfp_predproj:InputErr', 'Term list must be a subset of the original ontology terms.');
             end
 
-            pred.ontology = pfp_subont(pred.ontology, list(found));
+            pred.ontology = pfp_subont(pred.ontology, list);
         otherwise
             % nop
     end
@@ -104,4 +102,4 @@ end
 % Yuxiang Jiang
 % School of Informatics and Computing
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 12:56:46 PM E
+% Last modified: Mon 30 Jan 2017 04:57:22 PM E

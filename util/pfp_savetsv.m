@@ -1,10 +1,10 @@
 function [] = pfp_savetsv(ofile, data, fmt)
-    %PFP_SAVEITEM Save item
+    %PFP_SAVETSV Save tab-splitted-value
     %
-    % [] = PFP_SAVEITEM(ofile, data);
-    % [] = PFP_SAVEITEM(ofile, data, fmt);
+    % [] = PFP_SAVETSV(ofile, data);
+    % [] = PFP_SAVETSV(ofile, data, fmt);
     %
-    %   Saves data to a file (one data item per line).
+    %   Saves data to a file in tab-splitted format.
     %
     % Note
     % ----
@@ -74,4 +74,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 02:38:40 PM E
+% Last modified: Mon 18 Dec 2017 02:50:29 PM E

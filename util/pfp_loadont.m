@@ -50,15 +50,15 @@ function [ont] = pfp_loadont(tfile, rfile)
     % }}}
 
     % read files {{{
-    terms = textscan(term_fid, '%s%s', 'Delimiter', '\t');
+    terms = textscan(term_fid, '%s%s');
     fclose(term_fid);
 
-    rels = textscan(rel_fid, '%s%s%s', 'Delimiter', '\t');
+    rels = textscan(rel_fid, '%s%s%s');
     fclose(rel_fid);
     % }}}
 
     % construct terms {{{
-    ont.term = cell2struct([terms{1}, terms{2}]', {'id', 'term'});
+    ont.term = cell2struct([terms{1}, terms{2}]', {'id', 'name'});
     % }}}
 
     % construct DAG, rel_code {{{
@@ -100,4 +100,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 02:33:51 PM E
+% Last modified: Fri 05 Jan 2018 07:43:21 PM E

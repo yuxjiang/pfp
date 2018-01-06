@@ -25,8 +25,8 @@ function [oa] = pfp_oaproj(oa, list, op)
     % [struct]
     % oa:   The ontology annotation structure. See pfp_oabuild.m
     %
-    % [cell]
-    % list: A cell array of (char) object IDs or terms.
+    % [cell or struct]
+    % list: A list of object IDs or terms (structure or ID).
     %
     % (optional)
     % [char]
@@ -59,7 +59,7 @@ function [oa] = pfp_oaproj(oa, list, op)
     validateattributes(oa, {'struct'}, {'nonempty'}, '', 'oa', 1);
 
     % list
-    validateattributes(list, {'cell'}, {'nonempty'}, '', 'list', 2);
+    validateattributes(list, {'cell', 'struct'}, {'nonempty'}, '', 'list', 2);
 
     % op
     op = validatestring(op, {'object', 'term'}, '', 'op', 3);
@@ -106,4 +106,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University Bloomington
-% Last modified: Wed 21 Sep 2016 01:05:11 PM E
+% Last modified: Mon 30 Jan 2017 04:55:25 PM E

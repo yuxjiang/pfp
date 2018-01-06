@@ -3,7 +3,7 @@ function [res] = pfp_objsim(oa, src, dst, varargin)
     %
     % [res] = PFP_OBJSIM(oa, src, dst, varargin);
     %
-    %   Computes similarity between objects (e.g., genes).
+    %   Computes similarity between annotated objects (e.g., genes/proteins).
     %
     % Reference
     % ---------
@@ -82,7 +82,7 @@ function [res] = pfp_objsim(oa, src, dst, varargin)
     %       .col   [cell]   A cell array of n2 "destination" object IDs.
     %       .data  [double] n1-by-n2 similarity matrix.
     %       .ttype [char]   The term similarity type.
-    %       .otype [char]   The objec similarity type.
+    %       .otype [char]   The object similarity type.
     %
     % Dependency
     % ----------
@@ -171,7 +171,7 @@ function [res] = pfp_objsim(oa, src, dst, varargin)
     ttype     = p.Results.ttype;
     otype     = p.Results.otype;
     if isempty(p.Results.tmat.row) || isempty(p.Results.tmat.col)
-        tmat = pfp_termsim(oa, tlist_row, tlist_col, 'prob', p.Results.prob, 'type', ttype);
+        tmat = pfp_termsim(oa, tlist_row, tlist_col, 'prob', prob, 'type', ttype);
     else
         tmat = p.Results.tmat;
         if ~all(ismember({tlist_row.id}, tmat.row)) || ~all(ismember({tlist_col.id}, tmat.col))
@@ -229,4 +229,4 @@ end
 % Yuxiang Jiang (yuxjiang@indiana.edu)
 % Department of Computer Science
 % Indiana University, Bloomington
-% Last modified: Wed 21 Sep 2016 01:07:55 PM E
+% Last modified: Fri 08 Dec 2017 01:43:25 PM E
